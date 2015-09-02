@@ -1,4 +1,4 @@
-node-x509
+wopenssl
 =========
 
 Simple OpenSSL certificate parser.
