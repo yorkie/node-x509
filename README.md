@@ -88,14 +88,14 @@ subject = { countryName: 'US',
 
 #### wopenssl.getPemFromP12
 
-Parser a PKCS#12 file, exports its PEM certificate.
+Parse a PKCS#12 file, exports its PEM certificate.
 
 ```js
 var wopenssl = require('wopenssl');
 
 var pemCert = wopenssl.getPemFromP12(__dirname + '/p12/cert.p12 + ', 'password');
 
-var subject = wopenssl.getSubject(__dirname + '/certs/nodejitsu.com.crt');
+var subject = wopenssl.getSubject(pemCert);
 
 ```
 
