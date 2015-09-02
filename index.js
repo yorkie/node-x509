@@ -1,10 +1,11 @@
 
-var x509 = require('./build/Release/x509');
+var x509 = require('./build/Release/wopenssl');
 
 exports.version = x509.version;
 exports.getAltNames = x509.getAltNames;
 exports.getSubject = x509.getSubject;
 exports.getIssuer = x509.getIssuer;
+exports.getPemFromP12 = x509.getPemFromP12;
 
 exports.parseCert = function(path) {
   var ret = x509.parseCert(path);
