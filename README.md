@@ -1,11 +1,15 @@
 node-x509
 =========
 
-Simple X509 certificate parser.
+Simple OpenSSL certificate parser.
+
+## Notice
+
+This is based on the awesome work of https://github.com/yorkie/node-x509
 
 ## Installation
 
-From NPM *(recommended)*: `npm install x.509`
+From NPM *(recommended)*: `npm install wopenssl`
 
 Building and testing from source:
 ```
@@ -17,17 +21,17 @@ npm test
 ## Usage
 Reading from a file:
 ```js
-var x509 = require('x509');
+var wopenssl = require('wopenssl');
 
-var issuer = x509.getIssuer(__dirname + '/certs/your.crt');
+var issuer = wopenssl.getIssuer(__dirname + '/certs/your.crt');
 ```
 
 Reading from a string:
 ```js
 var fs = require('fs'),
-    x509 = require('x509');
+    wopenssl = require('wopenssl');
 
-var issuer = x509.getIssuer(fs.readFileSync('./certs/your.crt').toString());
+var issuer = wopenssl.getIssuer(fs.readFileSync('./certs/your.crt').toString());
 ```
 
 ## Methods
@@ -35,25 +39,25 @@ var issuer = x509.getIssuer(fs.readFileSync('./certs/your.crt').toString());
 - `cert` may be a filename or a raw base64 encoded PEM string in any of these methods.
 
 
-#### x509.getAltNames(`cert`)
-Parse certificate with `x509.parseCert` and return the alternate names.
+#### wopenssl.getAltNames(`cert`)
+Parse certificate with `wopenssl.parseCert` and return the alternate names.
 
 ```js
-var x509 = require('x509');
+var wopenssl = require('wopenssl');
 
-var altNames = x509.getAltNames(__dirname + '/certs/nodejitsu.com.crt');
+var altNames = wopenssl.getAltNames(__dirname + '/certs/nodejitsu.com.crt');
 /*
 altNames = [ '*.nodejitsu.com', 'nodejitsu.com' ]
 */
 ```
 
-#### x509.getIssuer(`cert`)
-Parse certificate with `x509.parseCert` and return the issuer.
+#### wopenssl.getIssuer(`cert`)
+Parse certificate with `wopenssl.parseCert` and return the issuer.
 
 ```js
-var x509 = require('x509');
+var wopenssl = require('wopenssl');
 
-var issuer = x509.getIssuer(__dirname + '/certs/nodejitsu.com.crt');
+var issuer = wopenssl.getIssuer(__dirname + '/certs/nodejitsu.com.crt');
 /*
 issuer = { countryName: 'GB',
   stateOrProvinceName: 'Greater Manchester',
@@ -63,13 +67,13 @@ issuer = { countryName: 'GB',
 */
 ```
 
-#### x509.getSubject(`cert`)
-Parse certificate with `x509.parseCert` and return the subject.
+#### wopenssl.getSubject(`cert`)
+Parse certificate with `wopenssl.parseCert` and return the subject.
 
 ```js
-var x509 = require('x509');
+var wopenssl = require('wopenssl');
 
-var subject = x509.getSubject(__dirname + '/certs/nodejitsu.com.crt');
+var subject = wopenssl.getSubject(__dirname + '/certs/nodejitsu.com.crt');
 /*
 subject = { countryName: 'US',
   postalCode: '10010',
@@ -82,13 +86,26 @@ subject = { countryName: 'US',
 */
 ```
 
-#### x509.parseCert(`cert`)
+#### wopenssl.getPemFromP12
+
+Parser a PKCS#12 file, exports its PEM certificate.
+
+```js
+var wopenssl = require('wopenssl');
+
+var pemCert = wopenssl.getPemFromP12(__dirname + '/p12/cert.p12 + ', 'password');
+
+var subject = wopenssl.getSubject(__dirname + '/certs/nodejitsu.com.crt');
+
+```
+
+#### wopenssl.parseCert(`cert`)
 Parse subject, issuer, valid before and after date, and alternate names from certificate.
 
 ```js
-var x509 = require('x509');
+var wopenssl = require('wopenssl');
 
-var cert = x509.parseCert(__dirname + '/certs/nodejitsu.com.crt');
+var cert = wopenssl.parseCert(__dirname + '/certs/nodejitsu.com.crt');
 /*
 cert = { subject: 
    { countryName: 'US',
@@ -120,8 +137,8 @@ cert = { subject:
 ## Examples
 Checking the date to make sure the certificate is active:
 ```js
-var x509 = require('x509'),
-    cert = x509.parseCert('yourcert.crt'),
+var wopenssl = require('wopenssl'),
+    cert = wopenssl.parseCert('yourcert.crt'),
     date = new Date();
 
 if (cert.notBefore > date) {
