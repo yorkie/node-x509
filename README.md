@@ -34,7 +34,7 @@ var fs = require('fs'),
 var issuer = wopenssl.getIssuer(fs.readFileSync('./certs/your.crt').toString());
 ```
 
-## Methods
+## x509 Methods
 **Notes:**
 - `cert` may be a filename or a raw base64 encoded PEM string in any of these methods.
 
@@ -86,19 +86,6 @@ subject = { countryName: 'US',
 */
 ```
 
-#### wopenssl.getPemFromP12
-
-Parse a PKCS#12 file, exports its PEM certificate.
-
-```js
-var wopenssl = require('wopenssl');
-
-var pemCert = wopenssl.getPemFromP12(__dirname + '/p12/cert.p12 + ', 'password');
-
-var subject = wopenssl.getSubject(pemCert);
-
-```
-
 #### wopenssl.parseCert(`cert`)
 Parse subject, issuer, valid before and after date, and alternate names from certificate.
 
@@ -132,6 +119,21 @@ cert = { subject:
     e: '65537',
     n: '.......' } }
 */
+```
+
+## PKCS#12 Methods
+
+#### wopenssl.extractP12
+
+Parse and extract a PKCS#12 file.
+
+```js
+var wopenssl = require('wopenssl');
+
+var p12 = wopenssl.extractP12(__dirname + '/p12/cert.p12 + ', 'password');
+
+var subject = wopenssl.getSubject(p12.certificate);
+
 ```
 
 ## Examples

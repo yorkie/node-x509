@@ -13,4 +13,4 @@ fs.readdirSync(path.join(__dirname, 'certs')).forEach(function (file) {
 });
 
 
-console.log(x509.parseCert(x509.getPemFromP12("test/p12/cert.p12", "password")));
+console.log(x509.parseCert(x509.extractP12("test/p12/cert.p12", "password").certificate));

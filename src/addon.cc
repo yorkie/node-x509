@@ -3,6 +3,7 @@
 
 #include <addon.h>
 #include <x509.h>
+#include <pkcs12.h>
 
 using namespace v8;
 
@@ -12,7 +13,7 @@ void init(Handle<Object> exports) {
   exports->Set(String::NewSymbol("getSubject"), FunctionTemplate::New(get_subject)->GetFunction());
   exports->Set(String::NewSymbol("getIssuer"), FunctionTemplate::New(get_issuer)->GetFunction());
   exports->Set(String::NewSymbol("parseCert"), FunctionTemplate::New(parse_cert)->GetFunction());
-  exports->Set(String::NewSymbol("getPemFromP12"), FunctionTemplate::New(get_pem_from_p12)->GetFunction());
+  exports->Set(String::NewSymbol("extractP12"), FunctionTemplate::New(extract_p12)->GetFunction());
 }
 
 NODE_MODULE(wopenssl, init)
