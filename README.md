@@ -1,11 +1,15 @@
 wopenssl
 =========
 
-Simple OpenSSL certificate parser.
+Simple OpenSSL wrapper for NodeJS.
 
 ## Notice
 
 This is based on the awesome work of https://github.com/yorkie/node-x509
+
+This project **is not yet ready for production** and a **work in progress**.
+
+This project aim to implement [OpenSSL](https://www.openssl.org/) commonly used features as a NodeJS module.
 
 ## Installation
 
