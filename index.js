@@ -1,14 +1,17 @@
 
-var x509 = require('./build/Release/wopenssl');
+var source = require('./build/Release/wopenssl');
 
-exports.version = x509.version;
-exports.getAltNames = x509.getAltNames;
-exports.getSubject = x509.getSubject;
-exports.getIssuer = x509.getIssuer;
-exports.extractP12 = x509.extractP12;
+exports.x509 = {};
+exports.pkcs12 = {};
 
-exports.parseCert = function(path) {
-  var ret = x509.parseCert(path);
+exports.version = source.version;
+exports.x509.getAltNames = source.getAltNames;
+exports.x509.getSubject = source.getSubject;
+exports.x509.getIssuer = source.getIssuer;
+exports.pkcs12.extract = source.extractP12;
+
+exports.x509.parseCert = function(path) {
+  var ret = source.parseCert(path);
   var exts = {};
   for (var key in ret.extensions) {
     var newkey = key.replace('X509v3', '').replace(/ /g, '');
