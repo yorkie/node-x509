@@ -1,6 +1,6 @@
 {
   "name": "wopenssl",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Simple SSL certificates parser and validator.",
   "author": "Cyprien DIOT <wixyvir@gmail.com>",
   "main": "index.js",
