@@ -1,4 +1,4 @@
-var x509 = require('../index'),
+var wopenssl = require('../index'),
     fs = require('fs'),
     path = require('path');
 
@@ -7,10 +7,10 @@ var x509 = require('../index'),
 
 fs.readdirSync(path.join(__dirname, 'certs')).forEach(function (file) {
   console.log("File: %s", file);
-  console.log(x509.parseCert(path.join(__dirname, 'certs', file)));
-  // x509.parseCert(path.join(__dirname, 'certs', file));
+  console.log(wopenssl.x509.parseCert(path.join(__dirname, 'certs', file)));
+  // wopenssl.parseCert(path.join(__dirname, 'certs', file));
   console.log();
 });
 
 
-console.log(x509.parseCert(x509.extractP12("test/p12/cert.p12", "password").certificate));
+console.log(wopenssl.x509.parseCert(wopenssl.pkcs12.extract("test/p12/cert.p12", "password").certificate));
