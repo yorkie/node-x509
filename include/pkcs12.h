@@ -21,7 +21,7 @@
 
 using namespace v8;
 
-#if NODE_VERSION_AT_LEAST(0, 11, 3) && defined(__APPLE__)
+#if NODE_VERSION_AT_LEAST(0, 11, 3)
   void extract_p12(const FunctionCallbackInfo<Value> &args);
 #else
   Handle<Value> extract_p12(const Arguments &args);
