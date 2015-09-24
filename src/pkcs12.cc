@@ -3,54 +3,33 @@
 
 using namespace v8;
 
-#if NODE_VERSION_AT_LEAST(0, 11, 3) && defined(__APPLE__)
-
 void	extract_p12(const FunctionCallbackInfo<Value> &args)
 {
+  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+
   if (args.Length() < 2) {
-    ThrowException(Exception::Error(String::New("Must provide a certificate path and a password")));
-    return NULL;
+    isolate->ThrowException(Exception::Error(String::NewFromUtf8(isolate, "Must provide a certificate path and a password")));
+    return;
   }
 
   if (!args[0]->IsString() || !args[1]->IsString()) {
-    ThrowException(Exception::TypeError(String::New("Certificate and password must be strings.")));
-    return NULL;
+    isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "Certificate and password must be strings.")));
+    return;
   }
 
-  Local<Object> exports(extract_from_p12(args[0]->ToString(), args[1]->ToString()));
+  String::Utf8Value data(args[0]->ToString());
+  String::Utf8Value password(args[0]->ToString());
+
+  Local<Object> exports(extract_from_p12(*data, *password));
   args.GetReturnValue().Set(exports);
 }
 
 
-#else
-
-Handle<Value> extract_p12(const Arguments &args) {
-  HandleScope scope;
-
-  if (args.Length() < 2) {
-    ThrowException(Exception::Error(String::New("Must provide a certificate file path and a password.")));
-    return scope.Close(Undefined());
-  }
-
-  if (!args[0]->IsString()) {
-    ThrowException(Exception::TypeError(String::New("Certificate and password must be strings.")));
-    return scope.Close(Undefined());
-  }
-
-  String::Utf8Value path(args[0]);
-  String::Utf8Value password(args[1]);
-
-  Handle<Value> exports(extract_from_p12(*path, *password));
-
-  return scope.Close(exports);
-}
-
-#endif
-
-Handle<Value> extract_from_p12(char *data, char* password) {
-  HandleScope		scope;
-  Handle<Object>	exports(Object::New());
-  Local<Array>		cacerts(Array::New());
+Handle<Object> extract_from_p12(char *data, char* password) {
+  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  EscapableHandleScope scope(isolate);
+  Local<Object>		exports(Object::New(isolate));
+  Local<Array>		cacerts(Array::New(isolate));
   FILE			*fp;
   EVP_PKEY		*pkey;
   RSA			*rsa;
@@ -67,23 +46,23 @@ Handle<Value> extract_from_p12(char *data, char* password) {
   OpenSSL_add_all_algorithms();
   ERR_load_crypto_strings();
   if (!(fp = fopen(data, "rb"))) {
-    ThrowException(Exception::TypeError(String::New("Cannot open file")));
-    return scope.Close(Undefined());
+    isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "Cannot open file")));
+    return scope.Escape(exports);
   }
   p12 = d2i_PKCS12_fp(fp, NULL);
   fclose (fp);
   if (!p12) {
-    ThrowException(Exception::TypeError(String::New("Error reading PKCS#12 file\n")));
-    return scope.Close(Undefined());
+    isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "Error reading PKCS#12 file\n")));
+    return scope.Escape(exports);
   }
   if (!PKCS12_parse(p12, password, &pkey, &cert, &ca)) {
-    ThrowException(Exception::TypeError(String::New("Error parsing PKCS#12 file\n")));
-    return scope.Close(Undefined());
+    isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "Error parsing PKCS#12 file\n")));
+    return scope.Escape(exports);
   }
   PKCS12_free(p12);
   if (!cert) {
-    ThrowException(Exception::TypeError(String::New("Cannot extract certificate from PKCS#12 file\n")));
-    return scope.Close(Undefined());
+    isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "Cannot extract certificate from PKCS#12 file\n")));
+    return scope.Escape(exports);
   }
 
   if (cert) {
@@ -93,7 +72,7 @@ Handle<Value> extract_from_p12(char *data, char* password) {
     BIO_get_mem_ptr(mem, &bptr);
     static_cast<void>(BIO_flush(mem));
     length = BIO_get_mem_data(mem, &output);
-    exports->Set(String::NewSymbol("certificate"), String::New(output, length));
+    exports->Set(String::NewFromUtf8(isolate, "certificate"), String::NewFromUtf8(isolate, output, String::kNormalString, length));
     BIO_free_all(mem);
   }
 
@@ -104,7 +83,7 @@ Handle<Value> extract_from_p12(char *data, char* password) {
     PEM_write_bio_RSAPrivateKey(mem, rsa, NULL, NULL, 0, NULL, NULL);
     static_cast<void>(BIO_flush(mem));
     length = BIO_get_mem_data(mem, &output);
-    exports->Set(String::NewSymbol("rsa"), String::New(output, length));
+    exports->Set(String::NewFromUtf8(isolate, "rsa"), String::NewFromUtf8(isolate, output, String::kNormalString, length));
     BIO_free_all(mem);
   }
 
@@ -118,16 +97,16 @@ Handle<Value> extract_from_p12(char *data, char* password) {
 	BIO_get_mem_ptr(mem, &bptr);
 	static_cast<void>(BIO_flush(mem));
 	length = BIO_get_mem_data(mem, &output);
-        cacerts->Set(i, String::New(output, length));	
+        cacerts->Set(i, String::NewFromUtf8(isolate, output, String::kNormalString, length));	
 	BIO_free_all(mem);
       }
-    exports->Set(String::NewSymbol("ca"), cacerts);
+    exports->Set(String::NewFromUtf8(isolate, "ca"), cacerts);
   }
 
 
   sk_X509_pop_free(ca, X509_free);
   X509_free(cert);
   EVP_PKEY_free(pkey);
-  return (scope.Close(exports));
+  return (scope.Escape(exports));
 }
 

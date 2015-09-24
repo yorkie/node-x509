@@ -4,6 +4,7 @@
   "description": "Simple SSL certificates parser and validator.",
   "author": "Cyprien DIOT <wixyvir@gmail.com>",
   "main": "index.js",
+  "engines" : { "node" : ">=0.12" },
   "repository": {
     "type": "git",
     "url": "http://github.com/wixyvir/node-wopenssl"
