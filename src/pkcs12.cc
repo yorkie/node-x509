@@ -18,7 +18,7 @@ void	extract_p12(const FunctionCallbackInfo<Value> &args)
   }
 
   String::Utf8Value data(args[0]->ToString());
-  String::Utf8Value password(args[0]->ToString());
+  String::Utf8Value password(args[1]->ToString());
 
   Local<Object> exports(extract_from_p12(*data, *password));
   args.GetReturnValue().Set(exports);
@@ -56,7 +56,7 @@ Handle<Object> extract_from_p12(char *data, char* password) {
     return scope.Escape(exports);
   }
   if (!PKCS12_parse(p12, password, &pkey, &cert, &ca)) {
-    isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "Error parsing PKCS#12 file\n")));
+    isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "Cannot parse PKCS#12 file (wrong password?)\n")));
     return scope.Escape(exports);
   }
   PKCS12_free(p12);
