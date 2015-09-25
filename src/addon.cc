@@ -3,15 +3,16 @@
 
 #include <addon.h>
 #include <x509.h>
+#include <pkcs12.h>
 
 using namespace v8;
 
 void init(Handle<Object> exports) {
-  exports->Set(String::NewSymbol("version"), String::New(VERSION));
-  exports->Set(String::NewSymbol("getAltNames"), FunctionTemplate::New(get_altnames)->GetFunction());
-  exports->Set(String::NewSymbol("getSubject"), FunctionTemplate::New(get_subject)->GetFunction());
-  exports->Set(String::NewSymbol("getIssuer"), FunctionTemplate::New(get_issuer)->GetFunction());
-  exports->Set(String::NewSymbol("parseCert"), FunctionTemplate::New(parse_cert)->GetFunction());
+  NODE_SET_METHOD(exports, "getAltNames", get_altnames);
+  NODE_SET_METHOD(exports, "getSubject", get_subject);
+  NODE_SET_METHOD(exports, "getIssuer", get_issuer);
+  NODE_SET_METHOD(exports, "parseCert", parse_cert);
+  NODE_SET_METHOD(exports, "extractP12", extract_p12);
 }
 
-NODE_MODULE(x509, init)
+NODE_MODULE(wopenssl, init)

@@ -1,12 +1,14 @@
 {
-  "name": "x.509",
-  "version": "0.1.1",
-  "description": "Simple X509 certificate parser.",
-  "author": "Yorkie Neil <yorkiefixer@gmail.com>",
+  "name": "wopenssl",
+  "version": "0.2.0",
+  "description": "Simple SSL certificates parser and validator.",
+  "author": "Cyprien DIOT <wixyvir@gmail.com>",
+  "keywords": [ "openssl", "x509", "ssl", "p12", "pkcs#12" ],
   "main": "index.js",
+  "engines" : { "node" : ">=0.12" },
   "repository": {
     "type": "git",
-    "url": "http://github.com/yorkie/node-x509"
+    "url": "http://github.com/wixyvir/node-wopenssl"
   },
   "scripts": {
     "test": "node test/test"

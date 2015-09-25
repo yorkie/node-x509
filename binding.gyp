@@ -10,10 +10,11 @@
 
   'targets': [
     {
-      'target_name': 'x509',
+      'target_name': 'wopenssl',
       'sources': [
         'src/addon.cc',
-        'src/x509.cc'
+        'src/x509.cc',
+	'src/pkcs12.cc'
       ],
       'include_dirs': [
         'include'
