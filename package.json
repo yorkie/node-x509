@@ -1,6 +1,6 @@
 {
   "name": "wopenssl",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Simple SSL certificates parser and validator.",
   "author": "Cyprien DIOT <wixyvir@gmail.com>",
   "keywords": [ "openssl", "x509", "ssl", "p12", "pkcs#12" ],
