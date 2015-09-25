@@ -13,6 +13,11 @@ This project aim to implement [OpenSSL](https://www.openssl.org/) commonly used 
 
 ## Installation
 
+This package works for:
+
+ - node 0.12.*
+
+
 From NPM *(recommended)*: `npm install wopenssl`
 
 Building and testing from source:

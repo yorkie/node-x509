@@ -21,12 +21,9 @@
 
 using namespace v8;
 
-#if NODE_VERSION_AT_LEAST(0, 11, 3) && defined(__APPLE__)
-  void extract_p12(const FunctionCallbackInfo<Value> &args);
-#else
-  Handle<Value> extract_p12(const Arguments &args);
-#endif
+void extract_p12(const FunctionCallbackInfo<Value> &args);
 
-Handle<Value> extract_from_p12(char *data, char* password);
+
+Handle<Object> extract_from_p12(char *data, char* password);
 
 #endif
