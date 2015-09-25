@@ -36,7 +36,6 @@ Handle<Object> extract_from_p12(char *data, char* password) {
   X509			*cert;
   STACK_OF(X509)	*ca = NULL;
   PKCS12		*p12;
-  BIO			*base64;
   BIO			*mem; 
   BUF_MEM		*bptr;
   size_t		length;
