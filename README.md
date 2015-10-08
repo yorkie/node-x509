@@ -3,7 +3,8 @@ wopenssl
 
 Simple OpenSSL wrapper for NodeJS.
 
-[![Travis](https://img.shields.io/travis/wixyvir/node-wopenssl.svg)]()
+[![Build Status](https://travis-ci.org/wixyvir/node-wopenssl.svg?branch=master)](https://travis-ci.org/wixyvir/node-wopenssl)
+
 
 ## Notice
 
