@@ -3,6 +3,9 @@
 
 #include <addon.h>
 #include <node_version.h>
+#include <nan.h>
+#include <string>
+
 
 #include <openssl/asn1.h>
 #include <openssl/bio.h>
@@ -21,7 +24,7 @@
 
 using namespace v8;
 
-void extract_p12(const FunctionCallbackInfo<Value> &args);
+NAN_METHOD(extract_p12);
 
 
 Handle<Object> extract_from_p12(char *data, char* password);

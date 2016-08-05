@@ -17,7 +17,8 @@
 	'src/pkcs12.cc'
       ],
       'include_dirs': [
-        'include'
+        'include',
+        "<!(node -e \"require('nan')\")"
       ],
       'conditions': [
         [ 'OS=="win"', {

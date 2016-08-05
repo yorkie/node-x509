@@ -13,5 +13,8 @@
   "scripts": {
     "test": "node test/test"
   },
-  "license": "MIT"
+    "license": "MIT",
+    "dependencies": {
+	"nan": "2.2.0"
+    }
 }
